@@ -1,6 +1,15 @@
 https://github.com/okovtun/PD_411_NP.git
 https://www.youtube.com/playlist?list=PLeqyOOqxeiIP5KsPYy1aw6x85VID8t2aF
 
+MAC:
+https://macvendors.com/
+https://standards.ieee.org/products-programs/regauth/mac/
+
+TODO:
+1. ћаски в сокращенном виде;
+2. Ќаписать программу, котора€ по паре IP-адрес и ћаска вычисл€ет 
+   адрес сети, широковещательный адрес, количество IP-адресов и количество узлов в сети;
+
 TODO:
 1. https://datatracker.ietf.org/doc/html/rfc791;
 2. 
