@@ -31,16 +31,21 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		HWND hIPaddress = GetDlgItem(hwnd, IDC_IPADDRESS);
 		HWND hIPmask = GetDlgItem(hwnd, IDC_IPMASK);
 		HWND hEditPrefix = GetDlgItem(hwnd, IDC_EDIT_PREFIX);
-		DWORD dwIPaddress = 0;
+		/*DWORD dwIPaddress = 0;
 		DWORD dwIPmask = UINT_MAX;
 		DWORD dwIPprefix = 0;
-		CHAR szIPprefix[3] = {};
+		CHAR szIPprefix[3] = {};*/
 		switch (LOWORD(wParam))
 		{
 		case IDC_IPADDRESS:
 		{
 			if (HIWORD(wParam) == EN_CHANGE)
 			{
+				DWORD dwIPaddress = 0;
+				DWORD dwIPmask = UINT_MAX;
+				DWORD dwIPprefix = 0;
+				CHAR szIPprefix[3] = {};
+
 				SendMessage(hIPaddress, IPM_GETADDRESS, 0, (LPARAM)&dwIPaddress);
 				DWORD dwFirst = FIRST_IPADDRESS(dwIPaddress);
 				if (dwFirst < 128)dwIPprefix = 8;
@@ -54,14 +59,40 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			}
 		}
 		break;
-		case IDC_IPMASK:
+		/*case IDC_IPMASK:
 		{
 			if (HIWORD(wParam) == EN_CHANGE)
 			{
+				DWORD dwIPmask = UINT_MAX;
+				DWORD dwIPprefix = 0;
+				CHAR szIPprefix[3] = {};
+
 				SendMessage(hIPmask, IPM_GETADDRESS, 0, (LPARAM)&dwIPmask);
 				for (; dwIPmask; dwIPmask <<= 1)dwIPprefix++;
 				sprintf(szIPprefix, "%i", dwIPprefix);
 				SendMessage(hEditPrefix, WM_SETTEXT, 0, (LPARAM)szIPprefix);
+			}
+		}
+		break;*/
+		case IDC_EDIT_PREFIX:
+		{
+			if (HIWORD(wParam) == EN_CHANGE)
+			{
+
+				DWORD dwIPmask = UINT_MAX;
+				DWORD dwIPprefix = 0;
+				CHAR szIPprefix[3] = {};
+
+				SendMessage(hEditPrefix, WM_GETTEXT, 3, (LPARAM)szIPprefix);
+				dwIPprefix = atoi(szIPprefix);
+				if (dwIPprefix > 32)
+				{
+					dwIPprefix = 32;
+					strcpy(szIPprefix, "32");
+					SendMessage(hEditPrefix, WM_SETTEXT, 0, (LPARAM)szIPprefix);
+				}
+				dwIPmask <<= (32 - dwIPprefix);
+				SendMessage(hIPmask, IPM_SETADDRESS, 0, dwIPmask);
 			}
 		}
 		break;
@@ -71,6 +102,31 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			EndDialog(hwnd, 0);
 			break;
 		}
+	}
+	break;
+	case WM_NOTIFY:
+	{
+		//if (wParam == IDC_IPMASK)
+		//if(((LPNMHDR)lParam)->code == IPN_FIELDCHANGED)
+		if(((LPNMHDR)lParam)->hwndFrom == GetDlgItem(hwnd, IDC_IPMASK))
+		{
+			HWND hIPmask = GetDlgItem(hwnd, IDC_IPMASK);
+			HWND hEditPrefix = GetDlgItem(hwnd, IDC_EDIT_PREFIX);
+			DWORD dwIPmask = UINT_MAX;
+			DWORD dwIPprefix = 0;
+			CHAR szIPprefix[3] = {};
+
+			SendMessage(hIPmask, IPM_GETADDRESS, 0, (LPARAM)&dwIPmask);
+			for (; dwIPmask >> 31; dwIPmask <<= 1)dwIPprefix++;
+			/////////////////////
+			//dwIPmask = UINT_MAX << (32 - dwIPprefix);
+			//SendMessage(hIPmask, IPM_SETADDRESS, 0, (LPARAM)&dwIPmask);
+			/////////////////////
+
+			sprintf(szIPprefix, "%i", dwIPprefix);
+			SendMessage(hEditPrefix, WM_SETTEXT, 0, (LPARAM)szIPprefix);
+		}
+		break;
 	}
 	break;
 	case WM_CLOSE:

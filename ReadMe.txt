@@ -6,7 +6,8 @@ https://macvendors.com/
 https://standards.ieee.org/products-programs/regauth/mac/
 
 TODO:
-1. Добить прогу;
+1. При изменении префикса должна меняться и маска;
+2. Добить прогу;
 
 DONE:
 1. Маски в сокращенном виде;
