@@ -5,7 +5,15 @@ MAC:
 https://macvendors.com/
 https://standards.ieee.org/products-programs/regauth/mac/
 
+T H R E A D S:
+https://learn.microsoft.com/en-us/windows/win32/procthread/thread-handles-and-identifiers
+
 TODO:
+1. Отобразить на Сервере количество активных клиентов и свободных слотов;
+2. Сообщение, отправенное одним пользователем, должно приходить всем активным пользователям;
+
+
+DONE:
 1. Обеспечить одновременное подключение нескольких клиентов;
 2. Идентифицировать каждого клиента на Сервере их сокетом (IP:port);
 
