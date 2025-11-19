@@ -42,7 +42,7 @@ int main()
 	hints.ai_protocol = IPPROTO_TCP;
 
 	//2) Задаем информацию о Сервере к которуму будем подключаться:
-	iResult = getaddrinfo("192.168.1.100", DEFAULT_PORT, &hints, &result);
+	iResult = getaddrinfo("127.0.0.1", DEFAULT_PORT, &hints, &result);
 	if (iResult != 0)
 	{
 		cout << "getaddrinfo failed: " << iResult << endl;
